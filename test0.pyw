@@ -32,11 +32,9 @@ f_BO10 = ("arial",10,"bold")
 f_BO12 = ("arial",12,"bold")
 
 ##columnconfig
-root.rowconfigure(0, minsize=40)
-root.rowconfigure(1, minsize=40)
-root.rowconfigure(2, minsize=40)
-root.rowconfigure(3, minsize=40)
-root.rowconfigure(4, minsize=40)
+rc = 40
+for i in range(10):
+    root.rowconfigure(i, minsize=rc)
 
 #Constants
 Rf = 287.058 # Universal Constant of Gases [J/(Kg K)]
@@ -80,33 +78,90 @@ t1 = tk.Entry(root,textvariable= T_ , width=6,justify="center",font=f_10)
 t1.grid(row=0,column=1)
 t1.insert("end", 20)
 
-##Pressure settings
-for i in [1,2,3,4]:
-    ttt  = "Pressure #{}".format(str(i))
-    l = tk.Label(root,text= ttt, padx = 10,font=f_BO10)
-    l.grid(row=i,column=0,sticky="w")
-    l_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
-    l_1.grid(row=i,column=2)
+#Atmospheric pressure selection    
+atm0 = tk.Label(root,text="ATM pressure", padx = 10,font=f_BO10)
+atm0.grid(row=1,column=0,sticky="w")
+atm0_1 = tk.Label(root,text="[mbars]",padx = 10,font=f_BO10)
+atm0_1.grid(row=1,column=2)
+atm_ = tk.StringVar()
+atm1 = tk.Entry(root,textvariable= atm_ , width=6,justify="center",font=f_10)
+atm1.grid(row=1,column=1)
+atm1.insert("end", 0)
 
+#Engine Speed selection    
+SpeedEn0 = tk.Label(root,text="Engine speed", padx = 10,font=f_BO10)
+SpeedEn0.grid(row=2,column=0,sticky="w")
+SpeedEn0_1 = tk.Label(root,text="[rpm]",padx = 10,font=f_BO10)
+SpeedEn0_1.grid(row=2,column=2)
+SpeedEn_ = tk.StringVar()
+SpeedEn1 = tk.Entry(root,textvariable= SpeedEn_ , width=6,justify="center",font=f_10)
+SpeedEn1.grid(row=2,column=1)
+SpeedEn1.insert("end", 0)
+
+#Fan Speed selection    
+SpeedFan0 = tk.Label(root,text="Fan speed", padx = 10,font=f_BO10)
+SpeedFan0.grid(row=3,column=0,sticky="w")
+SpeedFan0_1 = tk.Label(root,text="[rpm]",padx = 10,font=f_BO10)
+SpeedFan0_1.grid(row=3,column=2)
+SpeedFan_ = tk.StringVar()
+SpeedFan1 = tk.Entry(root,textvariable= SpeedFan_, width=6,justify="center",font=f_10)
+SpeedFan1.grid(row=3,column=1)
+SpeedFan1.insert("end", 0)
+
+#Inlet tube Diameter    
+D0 = tk.Label(root,text="Inlet Diameter", padx = 10,font=f_BO10)
+D0.grid(row=4,column=0,sticky="w")
+D0_1 = tk.Label(root,text="[mm]",padx = 10,font=f_BO10)
+D0_1.grid(row=4,column=2)
+D_ = tk.StringVar()
+D1 = tk.Entry(root,textvariable= SpeedFan_, width=6,justify="center",font=f_10)
+D1.grid(row=4,column=1)
+D1.insert("end", 0)
+
+
+Row0 = 5 #last row used in the this previous part + 1
+RowF = Row0 + 6
+Rows = [i for i in range(Row0,RowF)] #list of rows 
+
+s = 0
+##Pressure settings
+for i in Rows:
+    ttt  = "Pressure #{}".format(str(s))
+    l = tk.Label(root,text= ttt, padx = 10,font=f_BO10)
+    l.grid(row=s,column=3,sticky="w")
+    l_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
+    l_1.grid(row=s,column=6)
+    s += 1
 #value definition
 P_1 = tk.StringVar()
 p1 = tk.Entry(root,textvariable= P_1 , width=6,justify="center",font=f_10)
-p1.grid(row=1,column=1)
+p1.grid(row=0,column=4)
 p1.insert("end", 0)
 
 P_2 = tk.StringVar()
 p2 = tk.Entry(root,textvariable= P_2 , width=6,justify="center",font=f_10)
-p2.grid(row=2,column=1)
+p2.grid(row=1,column=4)
 p2.insert("end", 0)
 
 P_3 = tk.StringVar()
 p3 = tk.Entry(root,textvariable= P_3 , width=6,justify="center",font=f_10)
-p3.grid(row=3,column=1)
+p3.grid(row=2,column=4)
 p3.insert("end", 0)
 
 P_4 = tk.StringVar()
 p4 = tk.Entry(root,textvariable= P_4 , width=6,justify="center",font=f_10)
-p4.grid(row=4,column=1)
+p4.grid(row=3,column=4)
 p4.insert("end", 0)
+
+P_5 = tk.StringVar()
+p5 = tk.Entry(root,textvariable= P_5 , width=6,justify="center",font=f_10)
+p5.grid(row=4,column=4)
+p5.insert("end", 0)
+
+P_6 = tk.StringVar()
+p6 = tk.Entry(root,textvariable= P_6 , width=6,justify="center",font=f_10)
+p6.grid(row=5,column=4)
+p6.insert("end", 0)
+
 
 root.mainloop() #looping the frame
