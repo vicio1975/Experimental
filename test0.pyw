@@ -8,6 +8,11 @@ Created on Sun Oct 14 16:35:29 2018
 import math
 import tkinter as tk
 from tkinter import  messagebox
+import datetime as tt
+
+#Time
+time = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+
 #from PIL import ImageTk, Image
 
 #Tkinter window
