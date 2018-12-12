@@ -21,12 +21,13 @@ root.title("Experimental Test")
 root.resizable(width=False, height=False)
 
 #Fonts
+f_ver = ("arial", 7)
 f_8 = ("arial", 8)
 f_9 = ("arial", 9)
 f_10 = ("arial", 10)
 f_12 = ("arial", 12)
 
-f_IT8 = ("arial", 8, "italic")
+f_IT6 = ("arial", 6, "italic")
 f_IT8 = ("arial", 8, "italic")
 f_IT9 = ("arial", 9, "italic")
 f_IT11 = ("arial", 11, "italic")
@@ -199,18 +200,21 @@ frame01.place(x=320,y=3)
 ### input part
 #Labels
 l00 = tk.Label(root,text="Parameters", font = f_BO12)
-l00.grid(row=0,column=0,sticky="e") 
+#l00.grid(row=0,column=0,sticky="e") 
+l00.place(x=150,y=8) 
 l01 = tk.Label(root,text="First Pass", font = f_BO12)
-l01.grid(row=0,column=3,sticky="e") 
+#l01.grid(row=0,column=3,sticky="e") 
+l01.place(x=440,y=8) 
 l02 = tk.Label(root,text="Second Pass", font = f_BO12)
-l02.grid(row=0,column=7,sticky="e") 
+#l02.grid(row=0,column=7,sticky="e") 
+l02.place(x=715,y=8) 
 l03 = tk.Label(root,text="Static Pressure", font = f_BO12, padx = 10)
-l03.place(x=900,y=8) 
+l03.place(x=925,y=8) 
 
 #temperature selection    
-l0 = tk.Label(root,text="Temperature", padx = 10,font=f_BO10)
+l0 = tk.Label(root,text="Temperature", padx = 2,font=f_BO10)
 l0.grid(row=1,column=0,sticky="e")
-l0_1 = tk.Label(root,text="[°C]",padx = 10,font=f_BO10)
+l0_1 = tk.Label(root,text="[°C]",padx = 2,font=f_BO10)
 l0_1.grid(row=1,column=2,sticky="w")
 T_ = tk.StringVar()
 t1 = tk.Entry(root,textvariable= T_ , width=wid,justify="center",font=f_10)
@@ -218,9 +222,9 @@ t1.grid(row=1,column=1)
 t1.insert("end", 20)
 
 #Atmospheric pressure selection    
-atm0 = tk.Label(root,text="ATM pressure", padx = 10,font=f_BO10)
+atm0 = tk.Label(root,text="ATM pressure", padx = 2,font=f_BO10)
 atm0.grid(row=2,column=0,sticky="e")
-atm0_1 = tk.Label(root,text="[mbars]",padx = 10,font=f_BO10)
+atm0_1 = tk.Label(root,text="[mbars]",padx = 2,font=f_BO10)
 atm0_1.grid(row=2,column=2,sticky="w")
 atm_ = tk.StringVar()
 atm1 = tk.Entry(root,textvariable= atm_ , width=wid,justify="center",font=f_10)
@@ -228,9 +232,9 @@ atm1.grid(row=2,column=1)
 atm1.insert("end", 1016)
 
 #Engine Speed selection    
-SpeedEn0 = tk.Label(root,text="Engine speed", padx = 10,font=f_BO10)
+SpeedEn0 = tk.Label(root,text="Engine speed", padx = 2,font=f_BO10)
 SpeedEn0.grid(row=3,column=0,sticky="e")
-SpeedEn0_1 = tk.Label(root,text="[rpm]",padx = 10,font=f_BO10)
+SpeedEn0_1 = tk.Label(root,text="[rpm]",padx = 2,font=f_BO10)
 SpeedEn0_1.grid(row=3,column=2,sticky="w")
 SpeedEn_ = tk.StringVar()
 SpeedEn1 = tk.Entry(root,textvariable= SpeedEn_ , width=wid,justify="center",font=f_10)
@@ -238,9 +242,9 @@ SpeedEn1.grid(row=3,column=1)
 SpeedEn1.insert("end", 0)
 
 #Fan Speed selection    
-SpeedFan0 = tk.Label(root,text="Fan speed", padx = 10,font=f_BO10)
+SpeedFan0 = tk.Label(root,text="Fan speed", padx = 2,font=f_BO10)
 SpeedFan0.grid(row=4,column=0,sticky="e")
-SpeedFan0_1 = tk.Label(root,text="[rpm]",padx = 10,font=f_BO10)
+SpeedFan0_1 = tk.Label(root,text="[rpm]",padx = 2,font=f_BO10)
 SpeedFan0_1.grid(row=4,column=2,sticky="w")
 SpeedFan_ = tk.StringVar()
 SpeedFan1 = tk.Entry(root,textvariable= SpeedFan_, width=wid,justify="center",font=f_10)
@@ -248,9 +252,9 @@ SpeedFan1.grid(row=4,column=1)
 SpeedFan1.insert("end", 0)
 
 #Inlet tube Diameter    
-D0 = tk.Label(root,text="Inlet Diameter", padx = 10,font=f_BO10)
+D0 = tk.Label(root,text="Inlet Diameter", padx = 2,font=f_BO10)
 D0.grid(row=5,column=0,sticky="e")
-D0_1 = tk.Label(root,text="[mm]",padx = 10,font=f_BO10)
+D0_1 = tk.Label(root,text="[mm]",padx = 2,font=f_BO10)
 D0_1.grid(row=5,column=2,sticky="w")
 D_ = tk.StringVar()
 D1 = tk.Entry(root,textvariable= D_, width=wid,justify="center",font=f_10)
@@ -379,23 +383,21 @@ stb = tk.Entry(root,textvariable = staticBody, width=wid,justify="center",font=f
 stb.grid(row=3,column=11,sticky="w")
 stb.insert("end", 0)
 
-   
 #################Text Remark
 text = tk.Text(root, state='normal', width=28, height=6, wrap='none')
 text.insert('1.0', 'Insert here some remarks')
 #thetext = text.get('1.0', 'end')
 #text.delete('1.0', '2.0')
 text.place(x=902,y=172) 
-
 ########################################################### END input section ###
 
 ######################
-###### Results Part
+###### Results Section
 l03 = tk.Label(root,text="Corrected values", font = f_BO12)
-l03.grid(row=7,column=0) 
+l03.place(x=135,y=290) 
 
-r1  = "Avg Total pressure "
-r1 = tk.Label(root,text= r1, padx = 15  ,font=f_BO10)
+r1  = "Avg Total pressure"
+r1 = tk.Label(root,text= r1, padx = 18  ,font=f_BO10)
 r1.grid(row=8,column=0,sticky="e")
 r1_1 = tk.Label(root,text="[mmH20]",padx = 10,font=f_BO10)
 r1_1.grid(row=8,column=2,sticky="w")
@@ -404,7 +406,7 @@ frame1 = tk.Frame(width=80,height=25, bg="white", colormap="new",relief=tk.SUNKE
 frame1.grid(row=8,column=1)
 
 r2  = "Duct Velocity"
-r2 = tk.Label(root,text= r2, padx = 15  ,font=f_BO10)
+r2 = tk.Label(root,text= r2, padx = 18  ,font=f_BO10)
 r2.grid(row=9,column=0,sticky="e")
 r2_1 = tk.Label(root,text="[m/s]",padx = 10,font=f_BO10)
 r2_1.grid(row=9,column=2,sticky="w")
@@ -457,12 +459,11 @@ r7_1.grid(row=10,column=5,sticky="w")
 frame7 = tk.Frame(width=80,height=25, bg="white",colormap="new",relief=tk.SUNKEN ,bd=2)
 frame7.grid(row=10,column=4)
 
-
 ###################
 #####   Buttons
 b0 = tk.Button(root,text="Calculate",command = calculon,font=f_BO12)
 b0.config( height = 3, width = 8)
-b0.place(x=730,y=355)
+b0.place(x=713,y=355)
 
 cltx1 = "Clean"+"\nPass#1"
 cl1 = tk.Button(root,text=cltx1,command = ClEaN_1, font=f_BO12)
@@ -472,11 +473,11 @@ cl1.place(x=824,y=355)
 cltx2 = "Clean"+"\nPass#2"
 cl2 = tk.Button(root,text=cltx2,command=ClEaN_2, font=f_BO12)
 cl2.config( height = 3, width = 8)
-cl2.place(x=920,y=355)
+cl2.place(x=935,y=355)
 
 ln = tk.Button(root,text="Close",command=root.destroy, font=f_BO12)
-ln.config( height = 3, width = 8)
-ln.place(x=1016,y=355)
+ln.config( height = 3, width = 6)
+ln.place(x=1045,y=355)
 
 #####################
 ### Bucher
@@ -486,7 +487,7 @@ lb_im.image = img
 lb_im.place(x=985, y=433)
 
 vv = "1.0"
-vers = tk.Label(root,text="Ver.{}".format(vv),font=f_8)
+vers = tk.Label(root, text="Ver.{}".format(vv), font=f_ver)
 vers.place(x=1100,y=480)
 
 root.mainloop() #looping the frame
