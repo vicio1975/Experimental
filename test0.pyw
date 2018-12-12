@@ -186,6 +186,9 @@ def ClEaN_2():
     for m in [P_1_2, P_2_2,P_3_2, P_4_2,P_5_2, P_6_2]:
         m.set(0)
 
+#def saveEx():
+    
+
 ###############
 #Decorators
 frame00 = tk.Frame(width=270,height=250, colormap="new",relief="sunken",bd=1)
