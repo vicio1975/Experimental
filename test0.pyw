@@ -14,8 +14,6 @@ from PIL import Image,ImageTk
 #Time
 time = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
 
-#from PIL import ImageTk, Image
-
 #Tkinter window
 root = tk.Tk() #new window
 root.geometry("1150x500+100+50")
@@ -148,17 +146,24 @@ def calculon():
     devl = tk.Label(root,text = devPowc, padx = 10, bg = "white", font=f_BO10)
     devl.grid(row = 10, column = 4)
 
+#Cleaning values
+def ClEaN_1():
+    for i in [P_1_1, P_2_1,P_3_1, P_4_1,P_5_1, P_6_1]:
+        i.set(0)
+def ClEaN_2():
+    for i in [P_1_2, P_2_2,P_3_2, P_4_2,P_5_2, P_6_2]:
+        i.set(0)
+
 
 ###############
 #Decorators
 frame00 = tk.Frame(width=270,height=250, colormap="new",relief="sunken",bd=1)
 frame00.place(x=40,y=3)  
 frame01 = tk.Frame(width=820,height=280, colormap="new",relief="sunken",bd=1)
-frame01.place(x=320,y=3)       
-    
+frame01.place(x=320,y=3)
+
 
 ### input part
-
 #Labels
 l00 = tk.Label(root,text="Parameters", font = f_BO12)
 l00.grid(row=0,column=0,sticky="e") 
@@ -329,8 +334,6 @@ stf = tk.Entry(root,textvariable = staticFan, width=wid,justify="center",font=f_
 stf.grid(row=2,column=11,sticky="w")
 stf.insert("end", 0)
 
-
-
 #body pressure
 s3 = "Body Pressure"
 s3 = tk.Label(root,text= s3, padx = 5  ,font=f_BO10)
@@ -342,11 +345,18 @@ staticBody = tk.StringVar()
 stb = tk.Entry(root,textvariable = staticBody, width=wid,justify="center",font=f_10)
 stb.grid(row=3,column=11,sticky="w")
 stb.insert("end", 0)
+
+   
+#################Text Remark
+text = tk.Text(root, state='normal', width=28, height=6, wrap='none')
+text.insert('1.0', 'Insert here some remarks')
+#thetext = text.get('1.0', 'end')
+#text.delete('1.0', '2.0')
+text.place(x=902,y=172) 
+
 ########################################################### END input section ###
 
 ######################
-
-
 ###### Results Part
 l03 = tk.Label(root,text="Corrected values", font = f_BO12)
 l03.grid(row=7,column=0) 
@@ -418,20 +428,29 @@ frame7.grid(row=10,column=4)
 ###################
 #####   Buttons
 b0 = tk.Button(root,text="Calculate",command=calculon,font=f_BO12) #command=calc,
-b0.config( height = 2, width = 8)
-b0.place(x=1020,y=300)
+b0.config( height = 3, width = 8)
+b0.place(x=730,y=355)
 
-ln = tk.Button(root,text="Exit",command=root.destroy,font=f_BO12)
-ln.config( height = 2, width = 8)
-ln.place(x=1020,y=360)
+cltx1 = "Clean"+"\nPass#1"
+cl1 = tk.Button(root,text=cltx1,command= ClEaN_1,font=f_BO12)
+cl1.config( height = 3, width = 8)
+cl1.place(x=824,y=355)
+
+cltx2 = "Clean"+"\nPass#2"
+cl2 = tk.Button(root,text=cltx2,command= ClEaN_2,font=f_BO12)
+cl2.config( height = 3, width = 8)
+cl2.place(x=920,y=355)
+
+ln = tk.Button(root,text="Close",command=root.destroy,font=f_BO12)
+ln.config( height = 3, width = 8)
+ln.place(x=1016,y=355)
+
 #####################
 
 ### Bucher
 canvas = tk.Canvas(root, width = 142, height = 70)      
-canvas.place(x=985,y=420)    
+canvas.place(x=989,y=428)    
 img = ImageTk.PhotoImage(Image.open("buc_muni_co.jpg"))
 canvas.create_image(20,5, anchor="nw", image=img)
-
-
 
 root.mainloop() #looping the frame
