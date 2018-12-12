@@ -9,6 +9,7 @@ import math
 import tkinter as tk
 from tkinter import  messagebox
 import datetime as tt
+from PIL import Image,ImageTk  
 
 #Time
 time = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
@@ -17,7 +18,7 @@ time = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
 
 #Tkinter window
 root = tk.Tk() #new window
-root.geometry("1200x500+100+50")
+root.geometry("1150x500+100+50")
 root.title("Experimental Test")
 root.resizable(width=False, height=False)
 
@@ -38,8 +39,10 @@ f_BO12 = ("arial",12,"bold")
 
 ##columnconfig
 rc = 40
-for i in range(20):
+for i in range(40):
     root.rowconfigure(i, minsize=rc)
+
+
 wid = 10
 #Constants
 Rf = 287.058 # Universal Constant of Gases [J/(Kg K)]
@@ -147,6 +150,13 @@ def calculon():
 
 
 ###############
+#Decorators
+frame00 = tk.Frame(width=270,height=250, colormap="new",relief="sunken",bd=1)
+frame00.place(x=40,y=3)  
+frame01 = tk.Frame(width=820,height=280, colormap="new",relief="sunken",bd=1)
+frame01.place(x=320,y=3)       
+    
+
 ### input part
 
 #Labels
@@ -156,8 +166,8 @@ l01 = tk.Label(root,text="First Pass", font = f_BO12)
 l01.grid(row=0,column=3,sticky="e") 
 l02 = tk.Label(root,text="Second Pass", font = f_BO12)
 l02.grid(row=0,column=7,sticky="e") 
-l03 = tk.Label(root,text="Static Pressure", font = f_BO12)
-l03.grid(row=0,column=10,sticky="e") 
+l03 = tk.Label(root,text="Static Pressure", font = f_BO12, padx = 10)
+l03.place(x=900,y=8) 
 
 #temperature selection    
 l0 = tk.Label(root,text="Temperature", padx = 10,font=f_BO10)
@@ -217,9 +227,9 @@ s = 1
 ##Pressure first pass
 for i in Rows:
     ttt  = "Total Pressure #{}".format(str(s))
-    l = tk.Label(root,text= ttt, padx = 15,font=f_BO10)
+    l = tk.Label(root,text= ttt, padx = 2,font=f_BO10)
     l.grid(row=s,column=3,sticky="e")
-    l_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
+    l_1 = tk.Label(root,text="[cmH20]",padx = 2,font=f_BO10)
     l_1.grid(row=s,column=5,sticky="w")
     s += 1
 
@@ -227,9 +237,9 @@ s = 1
 ##Pressure second pass
 for i in Rows:
     ttt  = "Total Pressure #{}".format(str(s))
-    l = tk.Label(root,text= ttt, padx = 15  ,font=f_BO10)
+    l = tk.Label(root,text= ttt, padx = 2  ,font=f_BO10)
     l.grid(row=s,column=7,sticky="e")
-    l_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
+    l_1 = tk.Label(root,text="[cmH20]",padx = 8, font=f_BO10)
     l_1.grid(row=s,column=9,sticky="w")
     s += 1
 
@@ -297,9 +307,9 @@ p6_2.insert("end", 0)
 
 #Static Pressure
 s1  = "Duct Pressure"
-s1 = tk.Label(root,text= s1, padx = 15  ,font=f_BO10)
+s1 = tk.Label(root,text= s1, padx = 5  ,font=f_BO10)
 s1.grid(row=1,column=10,sticky="e")
-s1_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
+s1_1 = tk.Label(root,text="[cmH20]",padx = 5,font=f_BO10)
 s1_1.grid(row=1,column=12,sticky="w")
     
 staticP = tk.StringVar()
@@ -309,9 +319,9 @@ stp.insert("end", 0)
 
 #Fan pressure
 s2  = "Fan Pressure"
-s2 = tk.Label(root,text= s2, padx = 15  ,font=f_BO10)
+s2 = tk.Label(root,text= s2, padx = 5  ,font=f_BO10)
 s2.grid(row=2,column=10,sticky="e")
-s2_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
+s2_1 = tk.Label(root,text="[cmH20]", padx = 5,font=f_BO10)
 s2_1.grid(row=2,column=12,sticky="w")
     
 staticFan = tk.StringVar()
@@ -319,11 +329,13 @@ stf = tk.Entry(root,textvariable = staticFan, width=wid,justify="center",font=f_
 stf.grid(row=2,column=11,sticky="w")
 stf.insert("end", 0)
 
+
+
 #body pressure
 s3 = "Body Pressure"
-s3 = tk.Label(root,text= s3, padx = 15  ,font=f_BO10)
+s3 = tk.Label(root,text= s3, padx = 5  ,font=f_BO10)
 s3.grid(row=3,column=10,sticky="e")
-s3_1 = tk.Label(root,text="[cmH20]",padx = 10,font=f_BO10)
+s3_1 = tk.Label(root,text="[cmH20]",padx = 5,font=f_BO10)
 s3_1.grid(row=3,column=12,sticky="w")
     
 staticBody = tk.StringVar()
@@ -333,6 +345,8 @@ stb.insert("end", 0)
 ########################################################### END input section ###
 
 ######################
+
+
 ###### Results Part
 l03 = tk.Label(root,text="Corrected values", font = f_BO12)
 l03.grid(row=7,column=0) 
@@ -405,11 +419,19 @@ frame7.grid(row=10,column=4)
 #####   Buttons
 b0 = tk.Button(root,text="Calculate",command=calculon,font=f_BO12) #command=calc,
 b0.config( height = 2, width = 8)
-b0.place(x=975,y=300)
+b0.place(x=1020,y=300)
 
 ln = tk.Button(root,text="Exit",command=root.destroy,font=f_BO12)
 ln.config( height = 2, width = 8)
-ln.place(x=975,y=360)
+ln.place(x=1020,y=360)
 #####################
+
+### Bucher
+canvas = tk.Canvas(root, width = 142, height = 70)      
+canvas.place(x=985,y=420)    
+img = ImageTk.PhotoImage(Image.open("buc_muni_co.jpg"))
+canvas.create_image(20,5, anchor="nw", image=img)
+
+
 
 root.mainloop() #looping the frame
