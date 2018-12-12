@@ -9,7 +9,7 @@ import math
 import tkinter as tk
 from tkinter import  messagebox
 import datetime as tt
-from PIL import Image,ImageTk  
+from PIL import Image, ImageTk  
 
 #Time
 time = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
@@ -21,32 +21,31 @@ root.title("Experimental Test")
 root.resizable(width=False, height=False)
 
 #Fonts
-f_8 = ("arial",8)
-f_9 = ("arial",9)
-f_10 = ("arial",10)
-f_12 = ("arial",12)
+f_8 = ("arial", 8)
+f_9 = ("arial", 9)
+f_10 = ("arial", 10)
+f_12 = ("arial", 12)
 
-f_IT8 = ("arial",8,"italic")
-f_IT8 = ("arial",8,"italic")
-f_IT9 = ("arial",9,"italic")
-f_IT11 = ("arial",11,"italic")
-f_BO7 = ("arial",7,"bold")
-f_BO9 = ("arial",9,"bold")
-f_BO10 = ("arial",10,"bold")
-f_BO12 = ("arial",12,"bold")
+f_IT8 = ("arial", 8, "italic")
+f_IT8 = ("arial", 8, "italic")
+f_IT9 = ("arial", 9, "italic")
+f_IT11 = ("arial", 11, "italic")
+f_BO7 = ("arial", 7, "bold")
+f_BO9 = ("arial", 9, "bold")
+f_BO10 = ("arial", 10, "bold")
+f_BO12 = ("arial", 12, "bold")
 
 ##columnconfig
 rc = 40
 for i in range(40):
     root.rowconfigure(i, minsize=rc)
-
-
 wid = 10
 #Constants
 Rf = 287.058 # Universal Constant of Gases [J/(Kg K)]
 pAtm = 101325 # [Pa] atmospheric pressure
 g = 9.806   # [m/s2] gravitational accelaration
 ###
+data = {"Temperature":[],"Atm pressure":[],"Engine Speed":[],"Fan Speed":[],"Inlet Diameter":[]}
 
 ###Functions
 def fluid():
@@ -68,16 +67,16 @@ def calculon():
     propfluid = fluid()
     t = propfluid[5] #temperature in Kelvin
     T = propfluid[4] #temperature in Celsius
-    
     #Parameters reading
     Par =  [T, atm_.get(), SpeedEn_.get(), SpeedFan_.get(), D_.get()]
     Par = [float(p) for p in Par]
     patm = Par[1]
+
     Dduct = Par[4]
     staticP_ = float(staticP.get())
     staticFan_ = float(staticFan.get())
     staticBody_ = float(staticBody.get())
-
+   
     #getting the total pressure values
     P_first =  [P_1_1.get(), P_2_1.get(),P_3_1.get(), P_4_1.get(),P_5_1.get(), P_6_1.get()]
     P_first = [float(p) for p in P_first]
@@ -95,13 +94,13 @@ def calculon():
     if Par[4] == 0:
         messagebox.showwarning("Warning","The intake tube diameter is 0!")
 
-    for i,p in enumerate(P_first):
+    for j,p in enumerate(P_first):
         if p == 0:
-            messagebox.showwarning("Warning","First Pass - Total pressure #{} is 0!".format(str(i+1)))
+            messagebox.showwarning("Warning","First Pass - Total pressure #{} is 0!".format(str(j+1)))
 
-    for i,p in enumerate(P_second):
+    for ii,p in enumerate(P_second):
         if p == 0:
-            messagebox.showwarning("Warning","Second Pass - Total pressure #{} is 0!".format(str(i+1)))
+            messagebox.showwarning("Warning","Second Pass - Total pressure #{} is 0!".format(str(ii+1)))
     if staticP_ == 0:
         messagebox.showwarning("Warning","The static pressure is 0!")
     ##################
@@ -146,14 +145,46 @@ def calculon():
     devl = tk.Label(root,text = devPowc, padx = 10, bg = "white", font=f_BO10)
     devl.grid(row = 10, column = 4)
 
+    #Dictionary data
+    
+    data["Temperature"] = Par[0]
+    data["Atm pressure"] = Par[1]
+    data["Engine Speed"] = Par[2]
+    data["Fan Speed"] = Par[3]
+    data["Inlet Diameter"] = Par[4]
+    data["Static Pressure"] = staticP_
+    data["Static Fan Pressure"] = staticFan_
+    data["Static Body Pressure"] = staticBody_
+
+    data["Point1_1"]=P_first[0]
+    data["Point2_1"]=P_first[1]
+    data["Point3_1"]=P_first[2]
+    data["Point4_1"]=P_first[3]
+    data["Point5_1"]=P_first[4]
+    data["Point6_1"]=P_first[5]
+
+    data["Point1_2"]=P_second[0]
+    data["Point2_2"]=P_second[1]
+    data["Point3_2"]=P_second[2]
+    data["Point4_2"]=P_second[3]
+    data["Point5_2"]=P_second[4]
+    data["Point6_2"]=P_second[5]
+    
+    data["Avg Tot pressure"]=AVGH
+    data["Duct Velocity"]=Vduct
+    data["Flow Rate"]=Qduct
+    data["Fan Pressure"]=staticFan_
+    data["Body Pressure"]=staticBody_
+    data["Developed Power"]=devPow
+
+
 #Cleaning values
 def ClEaN_1():
-    for i in [P_1_1, P_2_1,P_3_1, P_4_1,P_5_1, P_6_1]:
-        i.set(0)
+    for ll in [P_1_1, P_2_1,P_3_1, P_4_1,P_5_1, P_6_1]:
+        ll.set(0)
 def ClEaN_2():
-    for i in [P_1_2, P_2_2,P_3_2, P_4_2,P_5_2, P_6_2]:
-        i.set(0)
-
+    for m in [P_1_2, P_2_2,P_3_2, P_4_2,P_5_2, P_6_2]:
+        m.set(0)
 
 ###############
 #Decorators
@@ -161,7 +192,6 @@ frame00 = tk.Frame(width=270,height=250, colormap="new",relief="sunken",bd=1)
 frame00.place(x=40,y=3)  
 frame01 = tk.Frame(width=820,height=280, colormap="new",relief="sunken",bd=1)
 frame01.place(x=320,y=3)
-
 
 ### input part
 #Labels
@@ -427,30 +457,33 @@ frame7.grid(row=10,column=4)
 
 ###################
 #####   Buttons
-b0 = tk.Button(root,text="Calculate",command=calculon,font=f_BO12) #command=calc,
+b0 = tk.Button(root,text="Calculate",command = calculon,font=f_BO12)
 b0.config( height = 3, width = 8)
 b0.place(x=730,y=355)
 
 cltx1 = "Clean"+"\nPass#1"
-cl1 = tk.Button(root,text=cltx1,command= ClEaN_1,font=f_BO12)
+cl1 = tk.Button(root,text=cltx1,command = ClEaN_1, font=f_BO12)
 cl1.config( height = 3, width = 8)
 cl1.place(x=824,y=355)
 
 cltx2 = "Clean"+"\nPass#2"
-cl2 = tk.Button(root,text=cltx2,command= ClEaN_2,font=f_BO12)
+cl2 = tk.Button(root,text=cltx2,command=ClEaN_2, font=f_BO12)
 cl2.config( height = 3, width = 8)
 cl2.place(x=920,y=355)
 
-ln = tk.Button(root,text="Close",command=root.destroy,font=f_BO12)
+ln = tk.Button(root,text="Close",command=root.destroy, font=f_BO12)
 ln.config( height = 3, width = 8)
 ln.place(x=1016,y=355)
 
 #####################
-
 ### Bucher
-canvas = tk.Canvas(root, width = 142, height = 70)      
-canvas.place(x=989,y=428)    
-img = ImageTk.PhotoImage(Image.open("buc_muni_co.jpg"))
-canvas.create_image(20,5, anchor="nw", image=img)
+img = ImageTk.PhotoImage(Image.open("buc_muni_co.png"), master=root)
+lb_im = tk.Label(root, image=img)
+lb_im.image = img
+lb_im.place(x=985, y=433)
+
+vv = "1.0"
+vers = tk.Label(root,text="Ver.{}".format(vv),font=f_8)
+vers.place(x=1100,y=480)
 
 root.mainloop() #looping the frame
