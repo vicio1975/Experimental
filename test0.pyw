@@ -204,12 +204,12 @@ l00 = tk.Label(root,text="Parameters", font = f_BO12)
 l00.place(x=150,y=8) 
 l01 = tk.Label(root,text="First Pass", font = f_BO12)
 #l01.grid(row=0,column=3,sticky="e") 
-l01.place(x=440,y=8) 
+l01.place(x=460,y=8) 
 l02 = tk.Label(root,text="Second Pass", font = f_BO12)
 #l02.grid(row=0,column=7,sticky="e") 
-l02.place(x=715,y=8) 
+l02.place(x=718,y=8) 
 l03 = tk.Label(root,text="Static Pressure", font = f_BO12, padx = 10)
-l03.place(x=925,y=8) 
+l03.place(x=950,y=8) 
 
 #temperature selection    
 l0 = tk.Label(root,text="Temperature", padx = 2,font=f_BO10)
@@ -461,23 +461,23 @@ frame7.grid(row=10,column=4)
 
 ###################
 #####   Buttons
-b0 = tk.Button(root,text="Calculate",command = calculon,font=f_BO12)
-b0.config( height = 3, width = 8)
-b0.place(x=713,y=355)
+b0 = tk.Button(root, text="Calculate", command=calculon, font=f_BO10)
+b0.config( height = 2, width = 8)
+b0.place(x=735,y=295)
 
 cltx1 = "Clean"+"\nPass#1"
-cl1 = tk.Button(root,text=cltx1,command = ClEaN_1, font=f_BO12)
-cl1.config( height = 3, width = 8)
-cl1.place(x=824,y=355)
+cl1 = tk.Button(root,text=cltx1,command = ClEaN_1, font=f_BO10)
+cl1.config( height = 2, width = 8)
+cl1.place(x=735,y=343)
 
 cltx2 = "Clean"+"\nPass#2"
-cl2 = tk.Button(root,text=cltx2,command=ClEaN_2, font=f_BO12)
-cl2.config( height = 3, width = 8)
-cl2.place(x=935,y=355)
+cl2 = tk.Button(root,text=cltx2,command=ClEaN_2, font=f_BO10)
+cl2.config( height = 2, width = 8)
+cl2.place(x=735,y=391)
 
-ln = tk.Button(root,text="Close",command=root.destroy, font=f_BO12)
-ln.config( height = 3, width = 6)
-ln.place(x=1045,y=355)
+ln = tk.Button(root,text="Close",command=root.destroy, font=f_BO10)
+ln.config( height = 2, width = 8)
+ln.place(x=735,y=439)
 
 #####################
 ### Bucher
