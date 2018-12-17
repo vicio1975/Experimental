@@ -10,6 +10,7 @@ import tkinter as tk
 from tkinter import  messagebox
 import datetime as tt
 from PIL import Image, ImageTk
+import csv
 
 # pylint: disable=locally-disabled, invalid-name
 #Time
@@ -47,7 +48,7 @@ pAtm = 101325 # [Pa] atmospheric pressure
 g = 9.806   # [m/s2] gravitational accelaration
 ###
 
-dati = {}
+data = []
 
 ##Functions
 def fluid():
@@ -85,11 +86,11 @@ def calculon():
     P_first2 = [(p)**2 for p in P_first]
     P_second2 = [(p)**2 for p in P_second]
     ####Error Messages
-    if Par[2] == 0:
+    if Par[1] == 0:
         messagebox.showwarning("Warning", "The Engine speed is 0!")
-    if Par[3] == 0:
+    if Par[2] == 0:
         messagebox.showwarning("Warning", "The Fan speed is 0!")
-    if Par[4] == 0:
+    if Par[3] == 0:
         messagebox.showwarning("Warning", "The intake tube diameter is 0!")
 
     for j, p in enumerate(P_first):
@@ -107,13 +108,13 @@ def calculon():
 
     #Estimations
     AVGH = (((sum(P_first2)+sum(P_second2))/12)**0.5)*10 \
-    * (t/293) * (1013/Par[1]) * (10363/(10363+(staticP_*10)))
-    Aduct = (0.25*math.pi*(Par[4]/1000)**2)
+    * (t/293) * (1013/Par[0]) * (10363/(10363+(staticP_*10)))
+    Aduct = (0.25*math.pi*(Par[3]/1000)**2)
     Vduct = 4.032*(AVGH)**0.5
     Qduct = Aduct*Vduct
     #static pressure correction
-    staticFan_ = staticFan_ * (t/293) * (1013/Par[1])
-    staticBody_ = staticBody_ * (t/293) * (1013/Par[1])
+    staticFan_ = staticFan_ * (t/293) * (1013/Par[0])
+    staticBody_ = staticBody_ * (t/293) * (1013/Par[0])
     #Developed Power
     devPow = Qduct * abs(staticFan_*58.84*1000/600)/1000
     #Estimation label
@@ -138,55 +139,61 @@ def calculon():
     devl = tk.Label(root, text="{:2.2f}".format(devPow), padx=10, bg="white", font=f_BO10)
     devl.grid(row=10, column=4)
 
-    #Dictionary dati
-    dati["Temperature"] = Par[0]
-    dati["Atm pressure"] = Par[1]
-    dati["Engine Speed"] = Par[2]
-    dati["Fan Speed"] = Par[3]
-    dati["Inlet Diameter"] = Par[4]
-    dati["Static Pressure"] = staticP_
-    dati["Static Fan Pressure"] = staticFan_
-    dati["Static Body Pressure"] = staticBody_
-    #first pass
-    dati["Point1_1"] = P_first[0]
-    dati["Point2_1"] = P_first[1]
-    dati["Point3_1"] = P_first[2]
-    dati["Point4_1"] = P_first[3]
-    dati["Point5_1"] = P_first[4]
-    dati["Point6_1"] = P_first[5]
-    #second pass
-    dati["Point1_2"] = P_second[0]
-    dati["Point2_2"] = P_second[1]
-    dati["Point3_2"] = P_second[2]
-    dati["Point4_2"] = P_second[3]
-    dati["Point5_2"] = P_second[4]
-    dati["Point6_2"] = P_second[5]
-    dati["Avg Tot pressure"] = AVGH
-    dati["Duct Velocity"] = Vduct
-    dati["Flow Rate"] = Qduct
-    dati["Fan Pressure"] = staticFan_
-    dati["Body Pressure"] = staticBody_
-    dati["Developed Power"] = devPow
-
+    #list data
+    I=0
+    for I in Par:
+        data.append(I)
+    data.append(staticP_)
+    data.append(staticFan_)
+    data.append(staticBody_)
+    for J in P_first:
+        data.append(J)
+    for II in P_second:
+        data.append(II)
+    for JJ in [AVGH, Vduct, Qduct, staticFan_, staticBody_, devPow]:
+        data.append(JJ)
+      
+    
 #Cleaning values
 def ClEaN_1():
     """ Clean values first pass """
+    messagebox.showwarning("Warning", "You are deleting the First Pass data!")
     for ll in [P_1_1, P_2_1, P_3_1, P_4_1, P_5_1, P_6_1]:
-        messagebox.showwarning("Warning", "You are deleting the First Pass data!")
         ll.set(0)
 
 def ClEaN_2():
     """ Clean values second pass """
+    messagebox.showwarning("Warning", "You are deleting the Second Pass data!")
     for m in [P_1_2, P_2_2, P_3_2, P_4_2, P_5_2, P_6_2]:
-        messagebox.showwarning("Warning", "You are deleting the Second Pass data!")
         m.set(0)
 
 def saveEx():
-    """ Save data """
-    if not dati:
+    """ 
+        - Save data 
+      
+    """
+    
+    header = ["Temperature", "Atm pressure","Engine Speed","Fan Speed", "Inlet Diameter",
+          "Static Pressure","Static Fan Pressure","Static Body Pressure", 
+          "P_1_1", "P_2_1", "P_3_1", "P_4_1", "P_5_1", "P_6_1",
+          "P_1_2", "P_2_2", "P_3_2", "P_4_2", "P_5_2", "P_6_2",
+          "Avg Tot pressure","Duct Velocity","Flow Rate","Fan Pressure",
+          "Body Pressure","Developed Power"]
+
+    if not data:
         messagebox.showwarning("Warning", "No data!")
     else:
-        print(dati)
+        print(data)
+        dataFile = open('expData_.csv', 'w+')
+        for head in header:
+            ss0 = head+","
+            dataFile.write(ss0)
+        dataFile.write("\n")   
+        for item in data:
+            ss1 = str("{2.5f}".format(item))+","
+            dataFile.write(ss1)
+        dataFile.close()
+            
 ###############
 #Decorators
 frame00 = tk.Frame(width=270, height=250, colormap="new", relief="sunken", bd=1)
