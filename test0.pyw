@@ -7,10 +7,10 @@ Created on Sun Oct 14 16:35:29 2018
 """
 import math
 import tkinter as tk
+from tkinter import filedialog
 from tkinter import  messagebox
 import datetime as tt
 from PIL import Image, ImageTk
-import csv
 
 # pylint: disable=locally-disabled, invalid-name
 #Time
@@ -67,6 +67,9 @@ def fluid():
 
 def calculon():
     """Execute the data correction"""
+    global Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH,\
+    Vduct, Qduct, devPow, remark
+
     #Fluid properties
     propfluid = fluid()
     t = float(propfluid[5]) #temperature in Kelvin
@@ -139,21 +142,10 @@ def calculon():
     devl = tk.Label(root, text="{:2.2f}".format(devPow), padx=10, bg="white", font=f_BO10)
     devl.grid(row=10, column=4)
 
-    #list data
-    I=0
-    for I in Par:
-        data.append(I)
-    data.append(staticP_)
-    data.append(staticFan_)
-    data.append(staticBody_)
-    for J in P_first:
-        data.append(J)
-    for II in P_second:
-        data.append(II)
-    for JJ in [AVGH, Vduct, Qduct, staticFan_, staticBody_, devPow]:
-        data.append(JJ)
-      
-    
+    remark = text.get("1.0", "end-1c")
+    if remark == "Insert here some remarks":
+        messagebox.showwarning("Warning", "No comments have been added!")
+
 #Cleaning values
 def ClEaN_1():
     """ Clean values first pass """
@@ -167,33 +159,59 @@ def ClEaN_2():
     for m in [P_1_2, P_2_2, P_3_2, P_4_2, P_5_2, P_6_2]:
         m.set(0)
 
-def saveEx():
-    """ 
-        - Save data 
-      
+def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
+           Vduct, Qduct, devPow, remark):
     """
-    
-    header = ["Temperature", "Atm pressure","Engine Speed","Fan Speed", "Inlet Diameter",
-          "Static Pressure","Static Fan Pressure","Static Body Pressure", 
-          "P_1_1", "P_2_1", "P_3_1", "P_4_1", "P_5_1", "P_6_1",
-          "P_1_2", "P_2_2", "P_3_2", "P_4_2", "P_5_2", "P_6_2",
-          "Avg Tot pressure","Duct Velocity","Flow Rate","Fan Pressure",
-          "Body Pressure","Developed Power"]
+    - Save data
+    """
+    header = ["Atm pressure(mbars)", "Engine Speed(rpm)", "Fan Speed(rpm)",
+              "Inlet Diameter(mm)", "Static Pressure(cmH2O)",
+              "Static Fan Pressure(cmH2O)", "Static Body Pressure(cmH2O)",
+              "P1st(cmH2O)", "P2st(cmH2O)", "P3st(cmH2O)",
+              "P4st(cmH2O)", "P5st(cmH2O)", "P6st(cmH2O)",
+              "P1nd(cmH2O)", "P2nd(cmH2O)", "P3nd(cmH2O)",
+              "P4nd(cmH2O)", "P5nd(cmH2O)", "P6nd(cmH2O)",
+              "Avg Tot pressure (mmH2O)", "Velocity(m/s)",
+              "Flow Rate(m^3/s)", "Fan Pressure(cmH2O)",
+              "Body Pressure(cmH2O)", "Developed Power(kW)", "Remarks"]
+    ##### data list creation
+    for I in Par:
+        data.append(I)
+    data.append(staticP_)
+    data.append(staticFan_)
+    data.append(staticBody_)
+    for J in P_first:
+        data.append(J)
+    for II in P_second:
+        data.append(II)
+    for JJ in [AVGH, Vduct, Qduct, staticFan_, staticBody_, devPow]:
+        data.append(JJ)
+    data.append(remark)
+    data.append("\n")
 
-    if not data:
-        messagebox.showwarning("Warning", "No data!")
-    else:
-        print(data)
-        dataFile = open('expData_.csv', 'w+')
-        for head in header:
-            ss0 = head+","
-            dataFile.write(ss0)
-        dataFile.write("\n")   
-        for item in data:
-            ss1 = str("{2.5f}".format(item))+","
-            dataFile.write(ss1)
-        dataFile.close()
-            
+    f = filedialog.asksaveasfile(mode="w", defaultextension=".csv")
+    if f is None:
+        return
+    for head in header:
+        ss0 = head + ","
+        f.write(ss0)
+    f.write("\n")
+
+    for item in data:
+        if item == "\n":
+            ss1 = "\n"
+        elif isinstance(item, str):
+            ss1 = item+","
+        else:
+            ss1 = str("{:2.5f}".format(item))+","
+        f.write(ss1)
+    f.close()
+def close():
+    """
+    Close the UI
+    """
+    root.destroy()
+
 ###############
 #Decorators
 frame00 = tk.Frame(width=270, height=250, colormap="new", relief="sunken", bd=1)
@@ -387,8 +405,6 @@ stb.insert("end", 0)
 #################Text Remark
 text = tk.Text(root, state='normal', width=28, height=6, wrap='none')
 text.insert('1.0', 'Insert here some remarks')
-#thetext = text.get('1.0', 'end')
-#text.delete('1.0', '2.0')
 text.place(x=902, y=172)
 ########################################################### END input section ###
 
@@ -466,7 +482,9 @@ b0 = tk.Button(root, text="Calculate", command=calculon, font=f_BO10)
 b0.config(height=2, width=8)
 b0.place(x=735, y=295)
 
-b1 = tk.Button(root, text="Save", command=saveEx, font=f_BO10)
+b1 = tk.Button(root, text="Save", command=lambda: saveEx(Par, staticP_,\
+staticFan_, staticBody_, P_first, P_second, AVGH, Vduct, Qduct, devPow, remark),\
+font=f_BO10)
 b1.config(height=2, width=8)
 b1.place(x=830, y=295)
 
@@ -480,7 +498,7 @@ cl2 = tk.Button(root, text=cltx2, command=ClEaN_2, font=f_BO10)
 cl2.config(height=2, width=8)
 cl2.place(x=735, y=391)
 
-ln = tk.Button(root, text="Close", command=root.destroy, font=f_BO10)
+ln = tk.Button(root, text="Close", command=close, font=f_BO10)
 ln.config(height=2, width=8)
 ln.place(x=735, y=439)
 
