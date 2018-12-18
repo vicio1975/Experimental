@@ -162,7 +162,9 @@ def ClEaN_2():
 def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
            Vduct, Qduct, devPow, remark):
     """
-    - Save data
+    
+    - Creating the data list and Saving data
+    
     """
     header = ["Atm pressure(mbars)", "Engine Speed(rpm)", "Fan Speed(rpm)",
               "Inlet Diameter(mm)", "Static Pressure(cmH2O)",
@@ -174,6 +176,7 @@ def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
               "Avg Tot pressure (mmH2O)", "Velocity(m/s)",
               "Flow Rate(m^3/s)", "Fan Pressure(cmH2O)",
               "Body Pressure(cmH2O)", "Developed Power(kW)", "Remarks"]
+    
     ##### data list creation
     for I in Par:
         data.append(I)
@@ -190,6 +193,7 @@ def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
     data.append("\n")
 
     f = filedialog.asksaveasfile(mode="w", defaultextension=".csv")
+    f.write(time_+"\n")
     if f is None:
         return
     for head in header:
