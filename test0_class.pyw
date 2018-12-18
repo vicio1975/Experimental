@@ -13,42 +13,8 @@ import datetime as tt
 from PIL import Image, ImageTk
 
 # pylint: disable=locally-disabled, invalid-name
-#Time
-time_ = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
-#Tkinter window
-root = tk.Tk() #new window # pylint: disable=locally-disabled, invalid-name
-root.geometry("1150x500+100+50")
-root.title("Experimental Test")
-root.resizable(width=False, height=False)
 
-#Fonts
-f_ver = ("arial", 7)
-f_8 = ("arial", 8)
-f_9 = ("arial", 9)
-f_10 = ("arial", 10)
-f_12 = ("arial", 12)
 
-f_IT6 = ("arial", 6, "italic")
-f_IT8 = ("arial", 8, "italic")
-f_IT9 = ("arial", 9, "italic")
-f_IT11 = ("arial", 11, "italic")
-f_BO7 = ("arial", 7, "bold")
-f_BO9 = ("arial", 9, "bold")
-f_BO10 = ("arial", 10, "bold")
-f_BO12 = ("arial", 12, "bold")
-
-##columnconfig
-rc = 40
-for i in range(40):
-    root.rowconfigure(i, minsize=rc)
-wid = 10
-#Constants
-Rf = 287.058 # Universal Constant of Gases [J/(Kg K)]
-pAtm = 101325 # [Pa] atmospheric pressure
-g = 9.806   # [m/s2] gravitational accelaration
-###
-
-data = []
 
 ##Functions
 def fluid():
@@ -507,14 +473,71 @@ ln.config(height=2, width=8)
 ln.place(x=735, y=439)
 
 #####################
-### Bucher
-img = ImageTk.PhotoImage(Image.open("buc_muni_co.png"), master=root)
-lb_im = tk.Label(root, image=img)
-lb_im.image = img
-lb_im.place(x=985, y=433)
+### Bucher    #######
+class App():
+    #Fonts
+    f_ver = ("arial", 7)
+    f_8 = ("arial", 8)
+    f_9 = ("arial", 9)
+    f_10 = ("arial", 10)
+    f_12 = ("arial", 12)
+    f_IT6 = ("arial", 6, "italic")
+    f_IT8 = ("arial", 8, "italic")
+    f_IT9 = ("arial", 9, "italic")
+    f_IT11 = ("arial", 11, "italic")
+    f_BO7 = ("arial", 7, "bold")
+    f_BO9 = ("arial", 9, "bold")
+    f_BO10 = ("arial", 10, "bold")
+    f_BO12 = ("arial", 12, "bold")
+    #Version
+    vv = "1.0"
+    #Time
+    time_ = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
+    wid = 10
 
-vv = "1.0"
-vers = tk.Label(root, text="Ver.{}".format(vv), font=f_ver)
-vers.place(x=1100, y=480)
+    #Physics Constants
+    Rf = 287.058 # Universal Constant of Gases [J/(Kg K)]
+    pAtm = 101325 # [Pa] atmospheric pressure
+    g = 9.806   # [m/s2] gravitational accelaration
 
-root.mainloop() #looping the frame
+    ### data
+    data = []
+
+    def __init__ (self, master):
+        
+        self.master = master
+        self.frame = tk.Frame(self.master)
+        self.frame.geometry("1150x500+100+50")
+        self.frame.title("Experimental Test")
+        self.frame.resizable(width=False, height=False)
+        self.img = ImageTk.PhotoImage(Image.open("buc_muni_co.png"), master=self.master)
+        self.lb_im = tk.Label(self.master, image=self.img)
+        self.lb_im.image = self.img
+        self.lb_im.place(x=985, y=433)                
+       
+        vers = tk.Label(self.frame, text="Ver.{}".format(self.vv), font=self.f_ver)
+        vers.place(x=1100, y=480)
+
+        ##columnconfig
+        for i in range(40):
+            self.master.rowconfigure(i, minsize=40)
+        
+
+
+    
+
+
+
+
+def main(): 
+    #Tkinter window
+    root = tk.Tk() #new window # pylint: disable=locally-disabled, invalid-name
+    App(root)
+    root.mainloop()
+
+if __name__ == '__main__':
+    main() #looping the frame
+
+
+
+
