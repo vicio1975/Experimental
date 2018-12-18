@@ -1,5 +1,4 @@
-#! /usr/bin/python3
-
+#!/home/vicio75/anaconda3/bin/python3
 # -*- coding: utf-8 -*-
 """
 Created on Sun Oct 14 16:35:29 2018
