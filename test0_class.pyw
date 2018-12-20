@@ -176,6 +176,7 @@ def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
             ss1 = str("{:2.5f}".format(item))+","
         f.write(ss1)
     f.close()
+
 def close():
     """
     Close the UI
