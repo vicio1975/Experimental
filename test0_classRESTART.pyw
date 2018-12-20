@@ -27,17 +27,51 @@ class fonts():
     f_BO10 = ("arial", 10, "bold")
     f_BO12 = ("arial", 12, "bold")
 
+#class butt():
+###############################
+#####   Buttons
+#    b0 = tk.Button(root, text="Calculate", command=calculon, font=f_BO10)
+#    b0.config(height=2, width=8)
+#    b0.place(x=735, y=295)
+#    
+#    b1 = tk.Button(root, text="Save", command=lambda: saveEx(Par, staticP_,\
+#    staticFan_, staticBody_, P_first, P_second, AVGH, Vduct, Qduct, devPow, remark),\
+#    font=f_BO10)
+#    b1.config(height=2, width=8)
+#    b1.place(x=830, y=295)
+#    
+#    cltx1 = "Clean"+"\nPass#1"
+#    cl1 = tk.Button(root, text=cltx1, command=ClEaN_1, font=f_BO10)
+#    cl1.config(height=2, width=8)
+#    cl1.place(x=735, y=343)
+#    
+#    cltx2 = "Clean"+"\nPass#2"
+#    cl2 = tk.Button(root, text=cltx2, command=ClEaN_2, font=f_BO10)
+#    cl2.config(height=2, width=8)
+#    cl2.place(x=735, y=391)
+#    
+#    ln = tk.Button(root, text="Close", command=close, font=f_BO10)
+#    ln.config(height=2, width=8)
+#    ln.place(x=735, y=439)
+###############################
+
 class Control:
     def __init__(self):
         self.root = tk.Tk()
         self.view = View(self.root)
         self.image = View.im(self.root)
 
-
     def run(self):
         self.root.title("Experimental Tard")
         self.root.deiconify()
         self.root.mainloop() 
+
+    def close(self):
+        """
+        Close the UI
+        """
+        self.root.destroy()
+
 
 class View():
     
@@ -77,6 +111,10 @@ class Calc:
         self.mi_ = self.ba * (self.t**1.5)/(self.t + self.sa) #Dinamic Viscosity  Pa s = kg m^-1 s^-1
         self.ni = self.mi_ / self.rot         #Cinematic Viscosity  m2·s-1
         self.Fp = [self.rot, self.gamma_t, self.mi_, self.ni, self.T, self.t]
+
+
+
+
         
 if __name__ == '__main__':
     c = Control()
