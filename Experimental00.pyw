@@ -25,6 +25,7 @@ except ImportError:
 #Time
 time_ = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
 #Tkinter window
+
 root = tk.Tk() #new window # pylint: disable=locally-disabled, invalid-name
 root.geometry("1210x500+50+50")
 root.title("Pitot-static probe")
