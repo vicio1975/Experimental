@@ -12,6 +12,10 @@ from tkinter import filedialog
 from tkinter import  messagebox
 import datetime as tt
 from tkinter import PhotoImage
+#
+#photoFrame = tk
+#photo_exit = ImageTk.PhotoImage(file="imgs/exit_.png")
+#ex = tk.Button(root, image=photo_exit, command=close, font=f_BO10)
 
 ##To solve import PIL
 try:
@@ -458,7 +462,7 @@ stb.insert("end", 0)
 #################Text Remark
 text = tk.Text(root, state='normal', width=32, height=6, wrap='none')
 text.insert("end", '   Insert here some remarks')
-text.place(x=945, y=172)
+text.place(x=910, y=172)
 
 ########################################################### END input section ###
 
@@ -538,7 +542,7 @@ b0 = tk.Button(root,image=photo_cal, text="Calculate", command=calculon, font=f_
 b0.config(height=140, width=151)
 b0["bg"] = "grey77"
 b0["border"] = "0"
-b0.place(x=675, y=295)
+b0.place(x=675, y=320)
 
 photo_canc1 = ImageTk.PhotoImage(file="imgs/clean1.png")
 #cltx1 = "Clean"+"\nPass#1"
@@ -546,7 +550,7 @@ cl1 = tk.Button(root, image=photo_canc1, command=ClEaN_1, font=f_BO10)
 cl1.config(height=140, width=136)
 cl1["bg"] = "grey77"
 cl1["border"] = "0"
-cl1.place(x=831, y=295)
+cl1.place(x=831, y=320)
 
 photo_canc2 = ImageTk.PhotoImage(file="imgs/clean2.png")
 #cltx2 = "Clean"+"\nPass#2"
@@ -554,7 +558,7 @@ cl1 = tk.Button(root, image=photo_canc2, command=ClEaN_2, font=f_BO10)
 cl1.config(height=140, width=136)
 cl1["bg"] = "grey77"
 cl1["border"] = "0"
-cl1.place(x=973, y=295)
+cl1.place(x=973, y=320)
 
 photo_save = ImageTk.PhotoImage(file="imgs/save.png")
 b1 = tk.Button(root, image=photo_save, command=lambda: saveEx(Par, staticP_,\
@@ -563,14 +567,14 @@ font=f_BO10)
 b1.config(height=67, width=67)
 b1["bg"] = "grey77"
 b1["border"] = "0"
-b1.place(x=1120, y=295)
+b1.place(x=1120, y=320)
 
 photo_exit = ImageTk.PhotoImage(file="imgs/exit_.png")
 ex = tk.Button(root, image=photo_exit, command=close, font=f_BO10)
 ex.config(height=67, width=67)
 ex["bg"] = "grey77"
 ex["border"] = "0"
-ex.place(x=1120, y=368)
+ex.place(x=1120, y=393)
 
 #####################
 ### Logo
