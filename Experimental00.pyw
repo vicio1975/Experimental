@@ -1,9 +1,7 @@
 #! /usr/bin/python3
-
 # -*- coding: utf-8 -*-
 """
 Created on Sun Oct 14 16:35:29 2018
-#http://www.science.smith.edu/dftwiki/index.php/Color_Charts_for_TKinter
 @author: vicio75
 """
 import math
@@ -25,21 +23,26 @@ except ImportError:
 #Time
 time_ = tt.datetime.now().strftime("%d/%m/%Y - %H:%M:%S")
 #Tkinter window
-
 root = tk.Tk() #new window # pylint: disable=locally-disabled, invalid-name
-root.geometry("1210x500+50+50")
+width = 1210
+height = 500
+screen_width = (root.winfo_screenwidth())
+screen_height = (root.winfo_screenheight())
+xs = int(screen_width*0.5 - width*0.5)
+ys = int(screen_height*0.5 - height*0.5)
+geom = "{}x{}+{:d}+{:d}".format(width,height,xs,ys)
+root.geometry(geom)
 root.title("Pitot-static probe")
 root.resizable(width=False, height=False)
 root.configure(bg="grey77")
-
 root.iconbitmap(r'fan.ico')
 
 ### Decorators
 frame00 = tk.Frame(width=320, height=280, colormap="new", relief="sunken", bd=1)
-frame00.place(x=25, y=3)
+frame00.place(x=25, y=5)
 frame01 = tk.Frame(width=845, height=280, colormap="new", relief="sunken", bd=1)
-frame01.place(x=350, y=3)
-frame02 = tk.Frame(width=645, height=200, colormap="new", relief="sunken", bd=1)
+frame01.place(x=350, y=5)
+frame02 = tk.Frame(width=875, height=200, colormap="new", relief="sunken", bd=1)
 frame02.place(x=25, y=288)
 
 #Fonts
@@ -48,7 +51,6 @@ f_8 = ("arial", 8)
 f_9 = ("arial", 9)
 f_10 = ("arial", 10)
 f_12 = ("arial", 12)
-
 f_IT6 = ("arial", 6, "italic")
 f_IT8 = ("arial", 8, "italic")
 f_IT9 = ("arial", 9, "italic")
@@ -75,14 +77,13 @@ widout = 80
 
 #Constants
 Rf = 287.058 # Universal Constant of Gases [J/(Kg K)]
-pAtm = 101325 # [Pa] atmospheric pressure
 g = 9.806   # [m/s2] gravitational accelaration
 ###
 
 data = []
 
 ##Functions
-def fluid():
+def fluid(pAtm):
     """Return the Fluid characteristics"""
     T = float(T_.get())
     t = T + 273.17 # Kelvin
@@ -101,12 +102,13 @@ def calculon():
     global Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH,\
     Vduct, Qduct, devPow, conPow, remark
 
-    #Fluid properties
-    propfluid = fluid()
-    t = float(propfluid[5]) #temperature in Kelvin
     #Parameters reading
     Par = [atm_.get(), SpeedEn_.get(), SpeedFan_.get(), D_.get(), Tor_.get()]
     Par = [float(p) for p in Par]
+    #Fluid properties
+    propfluid = fluid(Par[0]*100) #Patm 1 mbar = 100 Pa
+    t = float(propfluid[5]) #temperature in Kelvin
+
 
     staticP_ = float(staticP.get())
     staticFan_ = float(staticFan.get())
@@ -132,21 +134,28 @@ def calculon():
     pp = []
     tt = ""
     for j, p in enumerate(P_first):
-        if p == 0: tt += (str(j+1)+",")
+        if p == 0: tt += " value #"+(str(j+1)+" = 0\n")
     if 0 in P_first:
-        tx0 = "First Pass - dynamic pressure #{} = 0!".format(tt[:-1])
+        tx0 = "In first pass:\n{}".format(tt)
         messagebox.showwarning("Warning", tx0)
 
     pp = []
     tt = ""
     for ii, p in enumerate(P_second):
-        if p == 0: tt += (str(ii+1)+",")
+        if p == 0: tt += " value #"+(str(ii+1)+" = 0\n")
     if 0 in P_second:
-        tx1 = "Second Pass - dynamic pressure #{} = 0!".format(tt[:-1])
+        tx1 = "In second pass:\n{}".format(tt)
         messagebox.showwarning("Warning", tx1)
 
     if staticP_ == 0:
-        messagebox.showwarning("Warning", "The static pressure is 0!")
+        messagebox.showwarning("Warning", "Intake static pressure is 0!")
+
+    if staticFan_ == 0:
+        messagebox.showwarning("Warning", "Fan static pressure is 0!")
+        
+    if staticBody_ == 0:
+        messagebox.showwarning("Warning", "Body static pressure is 0!")
+        
     ##################
 
     ########>>>> Estimations <<<<##############
@@ -268,13 +277,13 @@ def close():
 ### inputs section
 #Labels
 l00 = tk.Label(root, text="Parameters", font=f_BO12)
-l00.place(x=156, y=8)
+l00.place(x=156, y=18)
 l01 = tk.Label(root, text="Dynamic Pressure - Pass #1", font=f_BO12)
-l01.place(x=365, y=8)
+l01.place(x=365, y=18)
 l02 = tk.Label(root, text="Dynamic Pressure - Pass #2", font=f_BO12)
-l02.place(x=650, y=8)
-l03 = tk.Label(root, text="Static Pressure", font=f_BO12, padx=10)
-l03.place(x=988, y=8)
+l02.place(x=640, y=18)
+l03 = tk.Label(root, text="Static Pressure values", font=f_BO12, padx=10)
+l03.place(x=940, y=18)
 
 #Temperature selection
 l0 = tk.Label(root, text="Temperature", font=f_BO10, padx=0)
@@ -467,8 +476,12 @@ text.place(x=910, y=172)
 
 ######################
 ###### Outputs Section
-l03 = tk.Label(root, text="Output values", font=f_BO12)
-l03.place(x=165, y=295)
+l03 = tk.Label(root, text="Tube air-flow", font=f_BO12)
+l03.place(x=150, y=295)
+l04 = tk.Label(root, text="Flow specific energy", font=f_BO12)
+l04.place(x=405, y=295)
+l05 = tk.Label(root, text="System performance", font=f_BO12)
+l05.place(x=670, y=295)
 
 r1 = "Dynamic pressure"
 r1 = tk.Label(root, text=r1, padx=0, font=f_BO10)
@@ -536,55 +549,54 @@ frame8.grid(row=11, column=4, sticky="we")
 
 ###################
 #####   Buttons
+xb1=950
+yb1=292
 photo_cal = ImageTk.PhotoImage(file="imgs/calculate.png")
 b0 = tk.Button(root,image=photo_cal, text="Calculate", command=calculon, font=f_BO10)
-b0.config(height=140, width=151)
+b0.config(height=88, width=90)
 b0["bg"] = "grey77"
 b0["border"] = "0"
-b0.place(x=675, y=320)
+b0.place(x=xb1, y=yb1)
 
 photo_canc1 = ImageTk.PhotoImage(file="imgs/clean1.png")
 #cltx1 = "Clean"+"\nPass#1"
 cl1 = tk.Button(root, image=photo_canc1, command=ClEaN_1, font=f_BO10)
-cl1.config(height=140, width=136)
+cl1.config(height=88, width=90)
 cl1["bg"] = "grey77"
 cl1["border"] = "0"
-cl1.place(x=831, y=320)
+cl1.place(x=xb1, y=yb1+100)
 
 photo_canc2 = ImageTk.PhotoImage(file="imgs/clean2.png")
 #cltx2 = "Clean"+"\nPass#2"
 cl1 = tk.Button(root, image=photo_canc2, command=ClEaN_2, font=f_BO10)
-cl1.config(height=140, width=136)
+cl1.config(height=88, width=90)
 cl1["bg"] = "grey77"
 cl1["border"] = "0"
-cl1.place(x=973, y=320)
+cl1.place(x=xb1+110, y=yb1+100)
 
 photo_save = ImageTk.PhotoImage(file="imgs/save.png")
 b1 = tk.Button(root, image=photo_save, command=lambda: saveEx(Par, staticP_,\
 staticFan_, staticBody_, P_first, P_second, AVGH, Vduct, Qduct, devPow, conPow, remark),\
 font=f_BO10)
-b1.config(height=67, width=67)
+b1.config(height=88, width=90)
 b1["bg"] = "grey77"
 b1["border"] = "0"
-b1.place(x=1120, y=320)
+b1.place(x=xb1+110, y=yb1)
 
-photo_exit = ImageTk.PhotoImage(file="imgs/exit_.png")
-ex = tk.Button(root, image=photo_exit, command=close, font=f_BO10)
-ex.config(height=67, width=67)
-ex["bg"] = "grey77"
-ex["border"] = "0"
-ex.place(x=1120, y=393)
+##photo_exit = ImageTk.PhotoImage(file="imgs/exit.png")
+##ex = tk.Button(root, image=photo_exit, command=close, font=f_BO10)
+##ex.config(height=67, width=67)
+##ex["bg"] = "grey77"
+##ex["border"] = "0"
+##ex.place(x=1120, y=393)
 
 #####################
-### Logo
-#photo = "imgs/buc_muni_co.png"
-#render = ImageTk.PhotoImage(file = photo) #render img
-#lb_im = tk.Label(root, image=render)
-#lb_im.image = render #keep a reference
-#lb_im.place(x=1080, y=433)
-
 vv = "2.0"
 vers = tk.Label(root, text="Ver.{}".format(vv), font=f_ver)
-vers.place(x=1145, y=480)
+vers.place(x=1160, y=480)
 vers.configure(bg="grey77")
 root.mainloop() #looping the frame
+
+#######################################################################
+##http://www.science.smith.edu/dftwiki/index.php/Color_Charts_for_TKinter
+
