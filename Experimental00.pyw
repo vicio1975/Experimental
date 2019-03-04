@@ -12,17 +12,13 @@ from tkinter import filedialog
 from tkinter import  messagebox
 import datetime as tt
 from tkinter import PhotoImage
-#
-#photoFrame = tk
-#photo_exit = ImageTk.PhotoImage(file="imgs/exit_.png")
-#ex = tk.Button(root, image=photo_exit, command=close, font=f_BO10)
 
 ##To solve import PIL
 try:
     from PIL import Image, ImageTk
 except ImportError:
     print("NO module found")
-    import Image
+    import Image  #noshow
     print("Image has been imported")
 
 # pylint: disable=locally-disabled, invalid-name
@@ -34,6 +30,8 @@ root.geometry("1210x500+50+50")
 root.title("Pitot-static probe")
 root.resizable(width=False, height=False)
 root.configure(bg="grey77")
+
+root.iconbitmap(r'fan.ico')
 
 ### Decorators
 frame00 = tk.Frame(width=320, height=280, colormap="new", relief="sunken", bd=1)
