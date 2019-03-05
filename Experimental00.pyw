@@ -86,7 +86,7 @@ data = []
 def fluid(pAtm):
     """Return the Fluid characteristics"""
     T = float(T_.get())
-    t = T + 273.17 # Kelvin
+    t = T + 273.15 # Kelvin
     rot = pAtm/(Rf*t) #Density as function of temperature in Kelvin [Kg/mc]
     gamma_t = rot * g  #specific weight at t°C
     #Sutherland Equation
@@ -107,12 +107,14 @@ def calculon():
     Par = [float(p) for p in Par]
     #Fluid properties
     propfluid = fluid(Par[0]*100) #Patm 1 mbar = 100 Pa
-    t = float(propfluid[5]) #temperature in Kelvin
+    #propfluid = fluid(101325) #Patm 1 mbar = 100 Pa
 
+    t = float(propfluid[5]) #temperature in Kelvin
 
     staticP_ = float(staticP.get())
     staticFan_ = float(staticFan.get())
     staticBody_ = float(staticBody.get())
+  
     #getting the total pressure values
     P_first = [P_1_1.get(), P_2_1.get(), P_3_1.get(), P_4_1.get(), P_5_1.get(), P_6_1.get()]
     P_first = [float(p) for p in P_first]
@@ -121,6 +123,7 @@ def calculon():
 
     P_first2 = [(p)**2 for p in P_first]
     P_second2 = [(p)**2 for p in P_second]
+    
     ####Error Messages
     if Par[1] == 0:
         messagebox.showwarning("Warning", "The Engine speed is 0!")
@@ -131,7 +134,7 @@ def calculon():
     if Par[4] == 0:
         messagebox.showwarning("Warning", "The torque is 0!")
 
-    pp = []
+    #pp = []
     tt = ""
     for j, p in enumerate(P_first):
         if p == 0: tt += " value #"+(str(j+1)+" = 0\n")
@@ -139,7 +142,7 @@ def calculon():
         tx0 = "In first pass:\n{}".format(tt)
         messagebox.showwarning("Warning", tx0)
 
-    pp = []
+    #pp = []
     tt = ""
     for ii, p in enumerate(P_second):
         if p == 0: tt += " value #"+(str(ii+1)+" = 0\n")
@@ -155,12 +158,12 @@ def calculon():
         
     if staticBody_ == 0:
         messagebox.showwarning("Warning", "Body static pressure is 0!")
-        
+       
     ##################
 
     ########>>>> Estimations <<<<##############
     AVGH = (((sum(P_first2)+sum(P_second2))/12)**0.5)*10 \
-    * (t/293) * (1013/Par[0]) * (10363/(10363+staticP_*10)) #averaged value of the dynamic pressure
+    * (t/293) * (1013/Par[0]) * (10363/(10363-(abs(staticP_)*10))) #averaged value of the dynamic pressure
     Aduct = (0.25*math.pi*(Par[3]/1000)**2)
     Vduct = 4.032*(AVGH)**0.5 #averaged value of the velocity
     Qduct = Aduct*Vduct #volume flow rate
@@ -172,6 +175,7 @@ def calculon():
     #Consumed Power
     conPow = Par[4]*(Par[2]*2*math.pi/60)/1000
     ###########################################
+
 
     #Estimation labels
     avg = tk.Label(root, text="{:2.2f}".format(AVGH), padx=10, bg="white", font=f_BO10)
@@ -199,7 +203,7 @@ def calculon():
     conl.grid(row=11, column=4)
 
     remark = text.get("1.0", "end-1c")
-    if remark == "Insert here some remarks":
+    if remark == "  Insert here some remarks":
         messagebox.showwarning("Warning", "No comments have been added!")
 
 #Cleaning values
@@ -223,7 +227,7 @@ def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
     
     """
     header = ["Atm pressure(mbars)", "Engine Speed(rpm)", "Fan Speed(rpm)",
-              "Inlet Diameter(mm)", "Static Pressure(cmH2O)",
+              "Inlet Diameter(mm)", "Torque(Nm)", "Static Pressure(cmH2O)",
               "Static Fan Pressure(cmH2O)", "Static Body Pressure(cmH2O)",
               "P1st(cmH2O)", "P2st(cmH2O)", "P3st(cmH2O)",
               "P4st(cmH2O)", "P5st(cmH2O)", "P6st(cmH2O)",
@@ -469,7 +473,7 @@ stb.insert("end", 0)
 
 #################Text Remark
 text = tk.Text(root, state='normal', width=32, height=6, wrap='none')
-text.insert("end", '   Insert here some remarks')
+text.insert("end", '  Insert here some remarks')
 text.place(x=910, y=172)
 
 ########################################################### END input section ###
@@ -582,13 +586,6 @@ b1.config(height=88, width=90)
 b1["bg"] = "grey77"
 b1["border"] = "0"
 b1.place(x=xb1+110, y=yb1)
-
-##photo_exit = ImageTk.PhotoImage(file="imgs/exit.png")
-##ex = tk.Button(root, image=photo_exit, command=close, font=f_BO10)
-##ex.config(height=67, width=67)
-##ex["bg"] = "grey77"
-##ex["border"] = "0"
-##ex.place(x=1120, y=393)
 
 #####################
 vv = "2.0"
