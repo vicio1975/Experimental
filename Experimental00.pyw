@@ -35,7 +35,7 @@ root.geometry(geom)
 root.title("Pitot-static probe")
 root.resizable(width=False, height=False)
 root.configure(bg="grey77")
-root.iconbitmap(r'fan.ico')
+#root.iconbitmap(r'\fan.ico')
 
 ### Decorators
 frame00 = tk.Frame(width=320, height=280, colormap="new", relief="sunken", bd=1)
@@ -559,7 +559,9 @@ photo_cal = ImageTk.PhotoImage(file="imgs/calculate.png")
 b0 = tk.Button(root,image=photo_cal, text="Calculate", command=calculon, font=f_BO10)
 b0.config(height=88, width=90)
 b0["bg"] = "grey77"
-b0["border"] = "0"
+b0["border"] = "2"
+b0["activebackground"]= "grey77"
+b0["highlightthickness"] = "0"
 b0.place(x=xb1, y=yb1)
 
 photo_canc1 = ImageTk.PhotoImage(file="imgs/clean1.png")
@@ -567,16 +569,20 @@ photo_canc1 = ImageTk.PhotoImage(file="imgs/clean1.png")
 cl1 = tk.Button(root, image=photo_canc1, command=ClEaN_1, font=f_BO10)
 cl1.config(height=88, width=90)
 cl1["bg"] = "grey77"
-cl1["border"] = "0"
+cl1["border"] = "2"
+cl1["highlightthickness"] = "0"
+cl1["activebackground"]= "grey77"
 cl1.place(x=xb1, y=yb1+100)
 
 photo_canc2 = ImageTk.PhotoImage(file="imgs/clean2.png")
 #cltx2 = "Clean"+"\nPass#2"
-cl1 = tk.Button(root, image=photo_canc2, command=ClEaN_2, font=f_BO10)
-cl1.config(height=88, width=90)
-cl1["bg"] = "grey77"
-cl1["border"] = "0"
-cl1.place(x=xb1+110, y=yb1+100)
+cl2 = tk.Button(root, image=photo_canc2, command=ClEaN_2, font=f_BO10)
+cl2.config(height=88, width=90)
+cl2["bg"] = "grey77"
+cl2["border"] = "2"
+cl2["highlightthickness"] = "0"
+cl2["activebackground"]= "grey77"
+cl2.place(x=xb1+110, y=yb1+100)
 
 photo_save = ImageTk.PhotoImage(file="imgs/save.png")
 b1 = tk.Button(root, image=photo_save, command=lambda: saveEx(Par, staticP_,\
@@ -584,7 +590,9 @@ staticFan_, staticBody_, P_first, P_second, AVGH, Vduct, Qduct, devPow, conPow, 
 font=f_BO10)
 b1.config(height=88, width=90)
 b1["bg"] = "grey77"
-b1["border"] = "0"
+b1["border"] = "2"
+b1["highlightthickness"] = "0"
+b1["activebackground"]= "grey77"
 b1.place(x=xb1+110, y=yb1)
 
 #####################
