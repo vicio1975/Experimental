@@ -39,7 +39,6 @@ root.configure(bg="grey77")
 icon = tk.Image("photo", file="imgs/icon.png")
 root.tk.call('wm','iconphoto',root._w,icon)
 
-
 ### Decorators
 frame00 = tk.Frame(width=320, height=280, colormap="new", relief="sunken", bd=1)
 frame00.place(x=25, y=5)
@@ -171,20 +170,20 @@ def calculon():
     Vduct = 4.032*(AVGH)**0.5 #averaged value of the velocity
     Qduct = Aduct*Vduct #volume flow rate
     #static pressure correction
-    staticP_   = staticP_ * (t/293) * (1013/Par[0])
-    staticFan_ = staticFan_ * (t/293) * (1013/Par[0])
-    staticBody_ = staticBody_ * (t/293) * (1013/Par[0])
+    staticP_   = abs(staticP_) * (t/293) * (1013/Par[0])
+    staticFan_ = abs(staticFan_) * (t/293) * (1013/Par[0])
+    staticBody_ = abs(staticBody_) * (t/293) * (1013/Par[0])
     #Developed Power
-    devPow = Qduct * abs(staticFan_*58.84*1000/600)/1000
+    devPow = Qduct * (staticFan_*58.84*1000/600)/1000
     #Consumed Power
     conPow = Par[4]*(Par[2]*2*math.pi/60)/1000
     #Efficiencies
     if conPow == 0:
-        conPow = 10**-12
-    effFan = 100*devPow/conPow
-    if abs(staticFan_ - staticBody_) == 0:
-        effHop = 100*(abs(staticP_ - staticBody_))/(10**-12)
-    else: effHop = 100*(abs(staticP_ - staticBody_))/abs(staticFan_ - staticBody_)
+        effFan = 0
+    else: effFan = 100*devPow/conPow
+    if (staticFan_ - staticP_) == 0:
+        effHop = 0
+    else: effHop = 100*(staticBody_ - staticP_)/(staticFan_ - staticP_)
     ###########################################
 
     #Estimation labels
@@ -236,7 +235,8 @@ def ClEaN_2():
         m.set(0)
 
 def saveEx(Par, staticP_, staticFan_, staticBody_, P_first, P_second, AVGH, \
-           Vduct, Qduct, devPow, conPow, remark):
+            Vduct, Qduct, devPow, conPow, effFan, effHop, remark):
+    
     """
     
     - Creating the data list and Saving data
@@ -539,7 +539,7 @@ frame4.grid(row=11, column=1, sticky="we")
 
 r5 = "Fan Pressure"
 r5 = tk.Label(root, text=r5, padx=0, font=f_BO10)
-r5.place(x=352, y=332)
+r5.place(x=350, y=332)
 r5_1 = tk.Label(root, text="[cmH20]", padx=5, font=f_BO10)
 r5_1.grid(row=8, column=5, sticky="w")
 frame5 = tk.Frame(width=widout, height=25, bg="white", colormap="new", relief=tk.SUNKEN, bd=1)
@@ -547,7 +547,7 @@ frame5.grid(row=8, column=4, sticky="we")
 
 r6 = "Body Pressure"
 r6 = tk.Label(root, text=r6, padx=0, font=f_BO10)
-r6.place(x=345, y=370)
+r6.place(x=340, y=370)
 r6_1 = tk.Label(root, text="[cmH20]", padx=5, font=f_BO10)
 r6_1.grid(row=9, column=5, sticky="w")
 frame6 = tk.Frame(width=widout, height=25, bg="white", colormap="new", relief=tk.SUNKEN, bd=1)
@@ -555,7 +555,7 @@ frame6.grid(row=9, column=4, sticky="we")
 
 r7 = "Developed Power"
 r7 = tk.Label(root, text=r7, padx=0, font=f_BO10)
-r7.place(x=331, y=412)
+r7.place(x=320, y=412)
 r7_1 = tk.Label(root, text="[kW]", padx=5, font=f_BO10)
 r7_1.grid(row=10, column=5, sticky="w")
 frame7 = tk.Frame(width=widout, height=25, bg="white", colormap="new", relief=tk.SUNKEN, bd=1)
@@ -563,7 +563,7 @@ frame7.grid(row=10, column=4, sticky="we")
 
 r8 = "Consumed Power"
 r8 = tk.Label(root, text=r8, padx=0, font=f_BO10)
-r8.place(x=336, y=451)
+r8.place(x=320, y=451)
 r8_1 = tk.Label(root, text="[kW]", padx=5, font=f_BO10)
 r8_1.grid(row=11, column=5, sticky="w")
 frame8 = tk.Frame(width=widout, height=25, bg="white", colormap="new", relief=tk.SUNKEN, bd=1)
@@ -576,6 +576,7 @@ r9_1 = tk.Label(root, text="[%]", padx=5, font=f_BO10)
 r9_1.grid(row=8, column=8, sticky="w")
 frame9 = tk.Frame(width=widout, height=25, bg="white", colormap="new", relief=tk.SUNKEN, bd=1)
 frame9.grid(row=8, column=7, sticky="we")
+frame9.grid_propagate(0)
 
 r10 = "Hopper\nEfficiency"
 r10 = tk.Label(root, text=r10, padx=0, font=f_BO10)
@@ -584,6 +585,7 @@ r10_1 = tk.Label(root, text="[%]", padx=5, font=f_BO10)
 r10_1.grid(row=9, column=8, sticky="w")
 frame10 = tk.Frame(width=widout, height=25, bg="white", colormap="new", relief=tk.SUNKEN, bd=1)
 frame10.grid(row=9, column=7, sticky="we")
+frame10.grid_propagate(0)
 
 ###################
 #####   Buttons
